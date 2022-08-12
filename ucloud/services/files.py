@@ -9,13 +9,13 @@ class Files(ABC):
         self.uid = uid
 
     @abstractmethod
-    def write(data: IO[bytes]) -> UUID:
+    async def write(self, data: IO[bytes]) -> UUID:
         pass
 
     @abstractmethod
-    def read(uid: UUID) -> IO[bytes]:
+    async def read(self, uid: UUID) -> IO[bytes]:
         pass
 
     @abstractmethod
-    def remove(uid: UUID) -> IO[bytes]:
+    async def remove(self, uid: UUID) -> IO[bytes]:
         pass

@@ -8,17 +8,17 @@ class Queue(ABC):
         self.uid = uid
 
     @abstractmethod
-    def push(data: dict) -> UUID:
+    async def push(self, data: dict) -> UUID:
         pass
 
     @abstractmethod
-    def pop(uid: UUID) -> dict:
+    async def pop(self, uid: UUID) -> dict:
         pass
 
     @abstractmethod
-    def empty() -> None:
+    async def empty(self) -> None:
         pass
 
     @abstractmethod
-    def total() -> int:
+    async def total(self) -> int:
         pass
