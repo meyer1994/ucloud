@@ -1,27 +1,33 @@
 from uuid import UUID
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+
+from ucloud.services.users import Users
 
 
 router = APIRouter()
 
 
 @router.post('/create')
-def create(root: UUID, data: dict) -> UUID:
-    pass
+async def create(data: dict, service: Users = Depends(Users)) -> UUID:
+    return await service.create(data)
+
 
 @router.delete('/delete/{uid}')
-def delete(root: UUID, uid: UUID) -> dict:
-    pass
+async def delete(uid: UUID, service: Users = Depends(Users)) -> dict:
+    return await service.delete(uid)
+
 
 @router.post('/login')
-def login(root: UUID, data: dict) -> dict:
-    pass
+async def login(uid: UUID, data: dict, service: Users = Depends(Users)) -> dict:
+    return await service.login(uid, data)
+
 
 @router.post('/logout')
-def logout(root: UUID, data: dict) -> dict:
-    pass
+async def logout(data: dict, service: Users = Depends(Users)) -> dict:
+    return await service.logout(data)
+
 
 @router.get('/fetch/{uid}')
-def fetch(root: UUID, uid: UUID) -> dict:
-    pass
+async def fetch(uid: UUID, service: Users = Depends(Users)) -> dict:
+    return await service.fetch(uid)

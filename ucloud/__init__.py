@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from .api import router
+from ucloud.api import router
 
 
 app = FastAPI()

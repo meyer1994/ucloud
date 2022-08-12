@@ -2,23 +2,23 @@ from uuid import UUID
 from abc import ABC, abstractmethod
 
 
-class Data(ABC):
+class Rest(ABC):
     def __init__(self, uid: UUID):
-        super(Data, self).__init__()
+        super(Rest, self).__init__()
         self.uid = uid
 
     @abstractmethod
-    def get(uid: UUID) -> dict:
+    async def get(self, uid: UUID) -> dict:
         pass
 
     @abstractmethod
-    def put(uid: UUID, data: dict) -> dict:
+    async def put(self, uid: UUID, data: dict) -> dict:
         pass
 
     @abstractmethod
-    def post(data: dict) -> UUID:
+    async def post(self, data: dict) -> UUID:
         pass
 
     @abstractmethod
-    def delete(uid: UUID) -> dict:
+    async def delete(self, uid: UUID) -> dict:
         pass

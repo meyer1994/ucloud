@@ -7,17 +7,17 @@ router = APIRouter()
 
 
 @router.post('/push')
-def push(root: UUID, data: dict) -> UUID:
+async def push(root: UUID, data: dict) -> UUID:
     pass
 
 @router.get('/pop')
-def pop(root: UUID, uid: UUID) -> dict:
+async def pop(root: UUID, uid: UUID) -> dict:
     pass
 
 @router.post('/empty')
-def empty(root: UUID, ) -> None:
+async def empty(root: UUID, ) -> None:
     pass
 
 @router.get('/total')
-def total(root: UUID, ) -> int:
+async def total(root: UUID, ) -> int:
     pass

@@ -8,21 +8,21 @@ class Users(ABC):
         self.uid = uid
 
     @abstractmethod
-    def create(data: dict) -> UUID:
+    async def create(self, data: dict) -> UUID:
         pass
 
     @abstractmethod
-    def delete(uid: UUID) -> dict:
+    async def delete(self, uid: UUID) -> dict:
         pass
 
     @abstractmethod
-    def login(uid: UUID, data: dict) -> dict:
+    async def login(self, uid: UUID, data: dict) -> dict:
         pass
 
     @abstractmethod
-    def logout(uid: UUID, token: str) -> dict:
+    async def logout(self, uid: UUID, token: str) -> dict:
         pass
 
     @abstractmethod
-    def fetch(uid: UUID) -> dict:
+    async def fetch(self, uid: UUID) -> dict:
         pass
