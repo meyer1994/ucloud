@@ -21,6 +21,6 @@ async def read(uid: UUID, service: Files = Depends(Files)) -> StreamingResponse:
     return await service.read(uid)
 
 
-@router.delete('/delete/{uid}')
+@router.delete('/remove/{uid}')
 async def remove(uid: UUID, service: Files = Depends(Files)) -> None:
     return await service.remove(uid)

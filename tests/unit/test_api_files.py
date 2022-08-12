@@ -27,7 +27,7 @@ class TestApiFiles(IsolatedAsyncioTestCase):
         service.read.assert_awaited_once_with('uid')
 
     async def test_remove(self):
-        """ Tests DELETE /delete/{uid} """
+        """ Tests DELETE /remove/{uid} """
         service = mock.AsyncMock()
 
         await files.remove('uid', service)
