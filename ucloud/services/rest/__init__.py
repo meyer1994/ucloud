@@ -5,6 +5,7 @@ from fastapi import Depends
 from ucloud.settings import Config, ConfigDep
 from ucloud.services.rest.base import RestBase
 from ucloud.services.rest.sqlite import RestSqlite
+from ucloud.services.rest.mongodb import RestMongoDB
 from ucloud.services.rest.postgresql import RestPostgreSQL
 
 
@@ -13,6 +14,8 @@ def Rest(root: UUID, config: Config = Depends(ConfigDep)) -> RestBase:
         return RestSqlite(root)
     if config.UCLOUD_REST_TYPE == 'postgresql':
         return RestPostgreSQL(root)
+    if config.UCLOUD_REST_TYPE == 'mongodb':
+        return RestMongoDB(root)
 
 
 async def startup(config: Config):
@@ -20,6 +23,8 @@ async def startup(config: Config):
         return await RestSqlite.startup(config)
     if config.UCLOUD_REST_TYPE == 'postgresql':
         return await RestPostgreSQL.startup(config)
+    if config.UCLOUD_REST_TYPE == 'mongodb':
+        return await RestMongoDB.startup(config)
 
 
 async def shutdown(config: Config):
@@ -27,3 +32,5 @@ async def shutdown(config: Config):
         return await RestSqlite.shutdown(config)
     if config.UCLOUD_REST_TYPE == 'postgresql':
         return await RestPostgreSQL.shutdown(config)
+    if config.UCLOUD_REST_TYPE == 'mongodb':
+        return await RestMongoDB.shutdown(config)
