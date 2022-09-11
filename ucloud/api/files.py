@@ -1,9 +1,8 @@
 from uuid import UUID
 from typing import IO
 
-from fastapi import APIRouter, Depends
-from fastapi.responses import StreamingResponse
-from fastapi.datastructures import UploadFile
+from fastapi import APIRouter, Depends, UploadFile
+from fastapi.responses import StreamingResponse, FileResponse
 
 from ucloud.services.files import Files
 
@@ -11,13 +10,13 @@ from ucloud.services.files import Files
 router = APIRouter()
 
 
-@router.post('/write')
+@router.put('/write')
 async def write(data: UploadFile, service: Files = Depends(Files)) -> UUID:
     return await service.write(data)
 
 
 @router.get('/read/{uid}')
-async def read(uid: UUID, service: Files = Depends(Files)) -> StreamingResponse:
+async def read(uid: UUID, service: Files = Depends(Files)) -> FileResponse:
     return await service.read(uid)
 
 
