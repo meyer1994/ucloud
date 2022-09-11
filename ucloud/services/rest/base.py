@@ -1,11 +1,13 @@
 from uuid import UUID
 from abc import ABC, abstractmethod
 
+from ucloud.settings import config
 
-class Rest(ABC):
-    def __init__(self, uid: UUID):
-        super(Rest, self).__init__()
-        self.uid = uid
+
+class RestBase(ABC):
+    def __init__(self, root: UUID):
+        super(RestBase, self).__init__()
+        self.root = root
 
     @abstractmethod
     async def get(self, uid: UUID) -> dict:

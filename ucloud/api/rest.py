@@ -13,7 +13,7 @@ async def get(uid: UUID, service: Rest = Depends(Rest)) -> dict:
     return await service.get(uid)
 
 
-@router.put('/get/{uid}')
+@router.put('/put/{uid}')
 async def put(uid: UUID, data: dict, service: Rest = Depends(Rest)) -> dict:
     return await service.put(uid, data)
 
