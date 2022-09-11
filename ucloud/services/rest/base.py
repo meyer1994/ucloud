@@ -1,7 +1,7 @@
 from uuid import UUID
 from abc import ABC, abstractmethod
 
-from ucloud.settings import config
+from ucloud.settings import Config
 
 
 class RestBase(ABC):
@@ -23,4 +23,14 @@ class RestBase(ABC):
 
     @abstractmethod
     async def delete(self, uid: UUID) -> dict:
+        pass
+
+    @staticmethod
+    @abstractmethod
+    async def startup(config: Config):
+        pass
+
+    @staticmethod
+    @abstractmethod
+    async def shutdown(config: Config):
         pass

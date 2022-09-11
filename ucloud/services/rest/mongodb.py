@@ -3,6 +3,7 @@ from uuid import UUID, uuid4
 
 from motor.motor_asyncio import AsyncIOMotorClient
 
+from ucloud.settings import Config
 from ucloud.services.rest.base import RestBase
 
 
@@ -60,7 +61,7 @@ class RestMongoDB(RestBase):
         return result
 
     @staticmethod
-    async def startup(config):
+    async def startup(config: Config):
         RestMongoDB._database = AsyncIOMotorClient(config.UCLOUD_REST_MONGODB_PATH)
         RestMongoDB._collection = RestMongoDB._database.ucloud['ucloud_rest']
 
@@ -68,6 +69,6 @@ class RestMongoDB(RestBase):
         await RestMongoDB._collection.create_index(keys, unique=True)
 
     @staticmethod
-    async def disconnect(config):
+    async def shutdown(config: Config):
         RestMongoDB._database = None
         RestMongoDB._collection = None

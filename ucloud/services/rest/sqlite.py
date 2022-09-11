@@ -103,6 +103,6 @@ class RestSqlite(RestBase):
         await RestSqlite._database.execute(query)
 
     @staticmethod
-    async def disconnect(config):
+    async def shutdown(config):
         await RestSqlite._database.disconnect()
         RestSqlite._database = None

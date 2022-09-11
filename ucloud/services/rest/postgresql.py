@@ -3,6 +3,7 @@ from uuid import UUID, uuid4
 
 from databases import Database
 
+from ucloud.settings import Config
 from ucloud.services.rest.base import RestBase
 
 
@@ -92,7 +93,7 @@ class RestPostgreSQL(RestBase):
         }
 
     @staticmethod
-    async def startup(config):
+    async def startup(config: Config):
         RestPostgreSQL._database = Database(config.UCLOUD_REST_POSTGRESQL_PATH)
         await RestPostgreSQL._database.connect()
 
@@ -107,6 +108,6 @@ class RestPostgreSQL(RestBase):
         await RestPostgreSQL._database.execute(query)
 
     @staticmethod
-    async def disconnect(config):
+    async def shutdown(config: Config):
         await RestPostgreSQL._database.disconnect()
         RestPostgreSQL._database = None
