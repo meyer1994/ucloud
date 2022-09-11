@@ -1,3 +1,5 @@
+import asyncio
+
 from fastapi import FastAPI, Depends
 from databases import Database
 
@@ -11,26 +13,22 @@ app.include_router(router)
 
 @app.on_event('startup')
 async def startup():
-    await rest.startup(config)
-    await files.startup(config)
-    await queue.startup(config)
+    await asyncio.gather(
+        rest.startup(config),
+        files.startup(config),
+        queue.startup(config)
+    )
 
 
 @app.on_event('shutdown')
 async def shutdown():
-    await rest.shutdown(config)
-    await files.shutdown(config)
-    await queue.shutdown(config)
+    await asyncio.gather(
+        rest.shutdown(config),
+        files.shutdown(config),
+        queue.shutdown(config)
+    )
 
 
 @app.get('/ping')
 async def ping():
     return 'pong'
-
-
-from fastapi import UploadFile
-
-@app.put('/fi')
-async def fi(f: UploadFile):
-    print(f)
-    return 123
