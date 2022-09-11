@@ -13,6 +13,9 @@ class Config(BaseSettings):
     UCLOUD_FILES_TYPE: str = 'local'
     UCLOUD_FILES_LOCAL_PATH: str = mkdtemp()
 
+    UCLOUD_QUEUE_TYPE: str = 'sqlite'
+    UCLOUD_QUEUE_SQLITE_PATH: str = 'sqlite:///' + mkstemp()[1]
+
 
 config = Config()
 

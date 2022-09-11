@@ -1,11 +1,13 @@
 from uuid import UUID
 from abc import ABC, abstractmethod
 
+from ucloud.settings import Config
 
-class Queue(ABC):
-    def __init__(self, uid: UUID):
-        super(Queue, self).__init__()
-        self.uid = uid
+
+class QueueBase(ABC):
+    def __init__(self, root: UUID):
+        super(QueueBase, self).__init__()
+        self.root = root
 
     @abstractmethod
     async def push(self, data: dict) -> UUID:
@@ -21,4 +23,14 @@ class Queue(ABC):
 
     @abstractmethod
     async def total(self) -> int:
+        pass
+
+    @staticmethod
+    @abstractmethod
+    async def startup(config: Config):
+        pass
+
+    @staticmethod
+    @abstractmethod
+    async def shutdown(config: Config):
         pass
