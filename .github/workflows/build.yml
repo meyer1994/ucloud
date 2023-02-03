@@ -22,8 +22,8 @@ jobs:
         credentials:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      mongodb:
-        image: mongodb
+      mongo:
+        image: mongo
         ports:
           - 27017:27017
         credentials:
