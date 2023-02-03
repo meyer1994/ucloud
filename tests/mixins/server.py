@@ -14,15 +14,11 @@ class Server(uvicorn.Server):
         https://stackoverflow.com/a/66589593
     """
 
-    def install_signal_handlers(self):
-        pass
-
     def start(self):
         self.thread = Thread(target=self.run)
         self.thread.start()
         while not self.started:
-            time.sleep(1e-3)
-        return
+            time.sleep(0.01)
 
     def stop(self):
         self.should_exit = True
@@ -36,13 +32,15 @@ class ServerMixin(IsolatedAsyncioTestCase):
 
     PORT = 5000
 
-    async def asyncSetUp(self):
-        await super().asyncSetUp()
-        self.config = uvicorn.Config('ucloud:app', port=self.PORT, log_level='error')
-        self.server = Server(self.config)
-        self.server.start()
-        self.client = httpx.Client(base_url=f'http://localhost:{self.PORT}')
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.config = uvicorn.Config('ucloud:app', port=cls.PORT, log_level='debug')
+        cls.server = Server(cls.config)
+        cls.server.start()
 
-    async def asyncTearDown(self):
-        await super().asyncTearDown()
-        self.server.stop()
+        cls.client = httpx.Client(base_url=f'http://localhost:{cls.PORT}')
+
+        # Last in, first out (LIFO)
+        cls.addClassCleanup(cls.server.stop)
+        cls.addClassCleanup(cls.client.close)

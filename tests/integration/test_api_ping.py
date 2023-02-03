@@ -5,5 +5,6 @@ class TestPing(ServerMixin):
     async def test_ping(self):
         """ `GET /ping` returns `pong` """
         response = self.client.get('/ping')
-        response = response.json()
-        self.assertEqual(response, 'pong')
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data, 'pong')

@@ -25,12 +25,12 @@ class RestBase(ABC):
     async def delete(self, uid: UUID) -> dict:
         pass
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    async def startup(config: Config):
+    async def startup(cls, config: Config):
         pass
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    async def shutdown(config: Config):
+    async def shutdown(cls, config: Config):
         pass

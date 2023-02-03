@@ -4,10 +4,11 @@ from uuid import UUID, uuid4
 from tempfile import mkstemp, SpooledTemporaryFile
 from pathlib import Path
 
+from fastapi import HTTPException
+from fastapi.responses import FileResponse
+
 from ucloud.settings import Config
 from ucloud.services.files.base import FilesBase
-
-from fastapi.responses import FileResponse
 
 
 class FilesLocal(FilesBase):
@@ -30,10 +31,20 @@ class FilesLocal(FilesBase):
 
     async def read(self, uid: UUID) -> FileResponse:
         path = self._path / str(self.root) / str(uid)
+
+        if not path.exists():
+            msg = f'File {uid} from {self.root} not found in local'
+            raise HTTPException(status_code=404, detail=msg)
+
         return FileResponse(path)
 
     async def remove(self, uid: UUID):
         path = self._path / str(self.root) / str(uid)
+
+        if not path.exists():
+            msg = f'File {uid} from {self.root} not found in local'
+            raise HTTPException(status_code=404, detail=msg)
+
         path.unlink()
 
     @staticmethod

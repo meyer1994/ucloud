@@ -10,9 +10,7 @@ class TestApiRest(IsolatedAsyncioTestCase):
         service.get.return_value = 'data'
 
         result = await rest.get('uid', service)
-
         self.assertEqual(result, 'data')
-
         service.get.assert_awaited_once_with('uid')
 
     async def test_put(self):
@@ -21,9 +19,7 @@ class TestApiRest(IsolatedAsyncioTestCase):
         service.put.return_value = 'data'
 
         result = await rest.put('uid', {}, service)
-
         self.assertEqual(result, 'data')
-
         service.put.assert_awaited_once_with('uid', {})
 
     async def test_post(self):
@@ -32,9 +28,7 @@ class TestApiRest(IsolatedAsyncioTestCase):
         service.post.return_value = 'data'
 
         result = await rest.post({}, service)
-
         self.assertEqual(result, 'data')
-
         service.post.assert_awaited_once_with({})
 
     async def test_delete(self):
@@ -43,7 +37,5 @@ class TestApiRest(IsolatedAsyncioTestCase):
         service.delete.return_value = 'data'
 
         result = await rest.delete('uid', service)
-
         self.assertEqual(result, 'data')
-
         service.delete.assert_awaited_once_with('uid')

@@ -10,9 +10,7 @@ class TestApiUsers(IsolatedAsyncioTestCase):
         service.create.return_value = 'data'
 
         result = await users.create({}, service)
-
         self.assertEqual(result, 'data')
-
         service.create.assert_awaited_once_with({})
 
     async def test_delete(self):
@@ -21,9 +19,7 @@ class TestApiUsers(IsolatedAsyncioTestCase):
         service.delete.return_value = 'data'
 
         result = await users.delete('uid', service)
-
         self.assertEqual(result, 'data')
-
         service.delete.assert_awaited_once_with('uid')
 
     async def test_login(self):
@@ -32,9 +28,7 @@ class TestApiUsers(IsolatedAsyncioTestCase):
         service.login.return_value = 'data'
 
         result = await users.login('uid', {}, service)
-
         self.assertEqual(result, 'data')
-
         service.login.assert_awaited_once_with('uid', {})
 
     async def test_delete(self):
@@ -43,7 +37,5 @@ class TestApiUsers(IsolatedAsyncioTestCase):
         service.delete.return_value = 'data'
 
         result = await users.delete('uid', service)
-
         self.assertEqual(result, 'data')
-
         service.delete.assert_awaited_once_with('uid')

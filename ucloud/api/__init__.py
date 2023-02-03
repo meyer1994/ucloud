@@ -7,7 +7,7 @@ from ucloud.api.users import router as router_users
 
 
 router = APIRouter(prefix='/{root}')
-router.include_router(router_rest, prefix='/rest')
-router.include_router(router_files, prefix='/files')
-router.include_router(router_queue, prefix='/queue')
-router.include_router(router_users, prefix='/users')
+router.include_router(router_rest, prefix='/rest', tags=['rest'])
+router.include_router(router_files, prefix='/files', tags=['files'])
+router.include_router(router_queue, prefix='/queue', tags=['queue'])
+router.include_router(router_users, prefix='/users', tags=['users'])

@@ -14,7 +14,11 @@ class QueueBase(ABC):
         pass
 
     @abstractmethod
-    async def pop(self, uid: UUID) -> dict:
+    async def pop(self) -> dict:
+        pass
+
+    @abstractmethod
+    async def peek(self) -> dict:
         pass
 
     @abstractmethod
@@ -25,12 +29,12 @@ class QueueBase(ABC):
     async def total(self) -> int:
         pass
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    async def startup(config: Config):
+    async def startup(cls, config: Config):
         pass
 
-    @staticmethod
+    @classmethod
     @abstractmethod
-    async def shutdown(config: Config):
+    async def shutdown(cls, config: Config):
         pass

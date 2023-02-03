@@ -2,6 +2,7 @@ import json
 from uuid import UUID, uuid4
 from datetime import datetime
 
+from fastapi import Response
 from databases import Database
 
 from ucloud.settings import Config
@@ -35,6 +36,26 @@ class QueueSqlite(QueueBase):
         }
 
     async def pop(self) -> dict:
+        item = await self.peek()
+
+        if isinstance(item, Response):
+            return item
+
+        values = {
+            'root': str(self.root),
+            'timestamp': item['timestamp']
+        }
+
+        query = '''
+            DELETE FROM ucloud_queue
+            WHERE root = :root AND timestamp = :timestamp
+        '''
+
+        await self._database.execute(query, values)
+
+        return item
+
+    async def peek(self) -> dict:
         values = {
             'root': str(self.root)
         }
@@ -47,17 +68,8 @@ class QueueSqlite(QueueBase):
 
         result = await self._database.fetch_one(query, values)
 
-        values = {
-            'root': str(self.root),
-            'timestamp': result.timestamp
-        }
-
-        query = '''
-            DELETE FROM ucloud_queue
-            WHERE root = :root AND timestamp = :timestamp
-        '''
-
-        await self._database.execute(query, values)
+        if result is None:
+            return Response(status_code=206)
 
         return {
             'root': self.root,
@@ -78,10 +90,6 @@ class QueueSqlite(QueueBase):
 
         await self._database.execute(query, values)
 
-        return {
-            'root': self.root
-        }
-
     async def total(self) -> int:
         values = {
             'root': str(self.root)
@@ -101,29 +109,29 @@ class QueueSqlite(QueueBase):
             }
         }
 
-    @staticmethod
-    async def startup(config):
-        QueueSqlite._database = Database(config.UCLOUD_QUEUE_SQLITE_PATH)
-        await QueueSqlite._database.connect()
+    @classmethod
+    async def startup(cls, config):
+        cls._database = Database(config.UCLOUD_QUEUE_SQLITE_PATH)
+        await cls._database.connect()
 
         query = '''
             CREATE TABLE IF NOT EXISTS ucloud_queue (
                 root TEXT,
                 uid TEXT,
                 data TEXT,
-                timestamp TIMESTAMP,
+                timestamp TIMESTAMP NOT NULL,
                 PRIMARY KEY (root, uid)
             )
         '''
-        await QueueSqlite._database.execute(query)
+        await cls._database.execute(query)
 
         query = '''
-            CREATE INDEX IF NOT EXISTS ucloud_queue_timestamp_idx
-            ON ucloud_queue (timestamp ASC)
+            CREATE INDEX IF NOT EXISTS ucloud_queue_root_timestamp_idx
+            ON ucloud_queue (root, timestamp ASC)
         '''
-        await QueueSqlite._database.execute(query)
+        await cls._database.execute(query)
 
-    @staticmethod
-    async def shutdown(config):
-        await QueueSqlite._database.disconnect()
-        QueueSqlite._database = None
+    @classmethod
+    async def shutdown(cls, config):
+        await cls._database.disconnect()
+        cls._database = None

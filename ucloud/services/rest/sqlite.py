@@ -1,7 +1,9 @@
 import json
 from uuid import UUID, uuid4
 
+from fastapi import HTTPException
 from databases import Database
+
 
 from ucloud.services.rest.base import RestBase
 
@@ -21,6 +23,7 @@ class RestSqlite(RestBase):
         '''
 
         result = await self._database.fetch_one(query, values)
+        self._raise_404_if_none(result, uid)
 
         return {
             'uid': result.uid,
@@ -43,6 +46,7 @@ class RestSqlite(RestBase):
         '''
 
         result = await self._database.fetch_one(query, values)
+        self._raise_404_if_none(result, uid)
 
         return {
             'uid': result.uid,
@@ -72,6 +76,8 @@ class RestSqlite(RestBase):
         }
 
     async def delete(self, uid: UUID) -> dict:
+        result = await self.get(uid)
+
         values = {
             'uid': str(uid),
             'root': str(self.root)
@@ -82,15 +88,14 @@ class RestSqlite(RestBase):
             WHERE root = :root AND uid = :uid
         '''
 
-        result = await self.get(uid)
         await self._database.execute(query, values)
 
         return result
 
-    @staticmethod
-    async def startup(config):
-        RestSqlite._database = Database(config.UCLOUD_REST_SQLITE_PATH)
-        await RestSqlite._database.connect()
+    @classmethod
+    async def startup(cls, config):
+        cls._database = Database(config.UCLOUD_REST_SQLITE_PATH)
+        await cls._database.connect()
 
         query = '''
             CREATE TABLE IF NOT EXISTS ucloud_rest (
@@ -100,9 +105,14 @@ class RestSqlite(RestBase):
                 PRIMARY KEY (root, uid)
             )
         '''
-        await RestSqlite._database.execute(query)
+        await cls._database.execute(query)
 
-    @staticmethod
-    async def shutdown(config):
-        await RestSqlite._database.disconnect()
-        RestSqlite._database = None
+    @classmethod
+    async def shutdown(cls, config):
+        await cls._database.disconnect()
+        cls._database = None
+
+    def _raise_404_if_none(self, data: dict, uid: str):
+        if data is None:
+            msg = f'Item {uid} from {self.root} not found in SQLite'
+            raise HTTPException(status_code=404, detail=msg)

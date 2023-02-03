@@ -1,6 +1,8 @@
 import json
 from uuid import UUID, uuid4
 
+import pymongo
+from fastapi import HTTPException
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from ucloud.settings import Config
@@ -18,6 +20,7 @@ class RestMongoDB(RestBase):
         }
 
         result = await self._collection.find_one(query)
+        self._raise_404_if_none(result, uid)
 
         result['uid'] = result['_id']
         del result['_id']
@@ -60,15 +63,28 @@ class RestMongoDB(RestBase):
 
         return result
 
-    @staticmethod
-    async def startup(config: Config):
-        RestMongoDB._database = AsyncIOMotorClient(config.UCLOUD_REST_MONGODB_PATH)
-        RestMongoDB._collection = RestMongoDB._database.ucloud['ucloud_rest']
+    @classmethod
+    async def startup(cls, config: Config):
+        cls._database = AsyncIOMotorClient(config.UCLOUD_REST_MONGODB_PATH)
+        cls._collection = cls._database.ucloud['ucloud_rest']
 
-        keys = [('root', 1), ('_id', 1)]
-        await RestMongoDB._collection.create_index(keys, unique=True)
+        await cls._collection.create_index(
+            keys=[('root', pymongo.HASHED), ('_id', pymongo.ASCENDING)],
+            name='root_hashed__id_1'
+        )
 
-    @staticmethod
-    async def shutdown(config: Config):
-        RestMongoDB._database = None
-        RestMongoDB._collection = None
+        await cls._collection.create_index(
+            keys=[('root', pymongo.ASCENDING), ('_id', pymongo.ASCENDING)],
+            name='root_1__id_1_unique',
+            unique=True
+        )
+
+    @classmethod
+    async def shutdown(cls, config: Config):
+        cls._database = None
+        cls._collection = None
+
+    def _raise_404_if_none(self, data: dict, uid: str):
+        if data is None:
+            msg = f'Item {uid} from {self.root} not found in MongoDB'
+            raise HTTPException(status_code=404, detail=msg)
