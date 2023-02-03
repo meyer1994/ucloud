@@ -19,7 +19,8 @@ class QueuePostgreSQL(QueueSqlite):
             CREATE TABLE IF NOT EXISTS ucloud_queue (
                 root TEXT,
                 uid TEXT,
-                data JSONB,
+                data TEXT,
+                timestamp TIMESTAMP NOT NULL,
                 PRIMARY KEY (root, uid)
             )
         '''
