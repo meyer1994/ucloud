@@ -32,6 +32,7 @@ jobs:
       - run: python -m unittest discover -vb tests/unit
 
       - run: python -m unittest discover -vb tests/integration
+        env:
           UCLOUD_FILES_TYPE: ${{ matrix.UCLOUD_FILES_TYPE }}
           UCLOUD_REST_TYPE: ${{ matrix.UCLOUD_REST_TYPE }}
           UCLOUD_QUEUE_TYPE: ${{ matrix.UCLOUD_QUEUE_TYPE }}
