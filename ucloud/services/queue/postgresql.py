@@ -16,11 +16,17 @@ class QueuePostgreSQL(QueueSqlite):
         await cls._database.connect()
 
         query = '''
-            CREATE TABLE IF NOT EXISTS ucloud_rest (
+            CREATE TABLE IF NOT EXISTS ucloud_queue (
                 root TEXT,
                 uid TEXT,
                 data JSONB,
                 PRIMARY KEY (root, uid)
             )
+        '''
+        await cls._database.execute(query)
+
+        query = '''
+            CREATE INDEX IF NOT EXISTS ucloud_queue_root_timestamp_idx
+            ON ucloud_queue (root, timestamp ASC)
         '''
         await cls._database.execute(query)
