@@ -12,7 +12,7 @@ from ucloud.services.queue.sqlite import QueueSqlite
 class QueuePostgreSQL(QueueSqlite):
     @classmethod
     async def startup(cls, config):
-        cls._database = Database(config.UCLOUD_REST_SQLITE_PATH)
+        cls._database = Database(config.UCLOUD_QUEUE_POSTGRESQL_PATH)
         await cls._database.connect()
 
         query = '''
