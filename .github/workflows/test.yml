@@ -19,6 +19,8 @@ jobs:
         image: postgres
         ports:
           - 5432:5432
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
         credentials:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
