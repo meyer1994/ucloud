@@ -17,10 +17,12 @@ jobs:
     services:
       postgres:
         image: postgres
-        port: 5432:5432
+        ports:
+          - 5432:5432
       mongodb:
         image: mongodb
-        port: 27017:27017
+        ports:
+          - 27017:27017
 
     steps:
       - uses: actions/checkout@v3
