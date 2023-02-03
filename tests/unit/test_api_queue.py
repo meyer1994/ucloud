@@ -22,6 +22,15 @@ class TestApiQueue(IsolatedAsyncioTestCase):
         self.assertEqual(result, 'data')
         service.pop.assert_awaited_once_with()
 
+    async def test_peek(self):
+        """ Tests GET /peek """
+        service = mock.AsyncMock()
+        service.peek.return_value = 'data'
+
+        result = await queue.peek(service)
+        self.assertEqual(result, 'data')
+        service.peek.assert_awaited_once_with()
+
     async def test_empty(self):
         """ Tests DELETE /empty """
         service = mock.AsyncMock()
