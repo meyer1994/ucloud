@@ -1,4 +1,3 @@
-import json
 from uuid import UUID, uuid4
 
 import pymongo
@@ -39,7 +38,7 @@ class RestMongoDB(RestBase):
             'data': data
         }
 
-        result = await self._collection.replace_one(query, values)
+        await self._collection.replace_one(query, values)
         return await self.get(uid)
 
     async def post(self, data: dict) -> UUID:

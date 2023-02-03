@@ -1,7 +1,6 @@
 import json
-from uuid import UUID, uuid4
+from uuid import UUID
 
-from fastapi import HTTPException
 from databases import Database
 
 from ucloud.settings import Config

@@ -1,7 +1,6 @@
 import asyncio
 
-from fastapi import FastAPI, Depends
-from databases import Database
+from fastapi import FastAPI
 
 from ucloud.api import router
 from ucloud.services import rest, files, queue

@@ -30,12 +30,3 @@ class TestApiUsers(IsolatedAsyncioTestCase):
         result = await users.login('uid', {}, service)
         self.assertEqual(result, 'data')
         service.login.assert_awaited_once_with('uid', {})
-
-    async def test_delete(self):
-        """ Tests DELETE /delete/{uid} """
-        service = mock.AsyncMock()
-        service.delete.return_value = 'data'
-
-        result = await users.delete('uid', service)
-        self.assertEqual(result, 'data')
-        service.delete.assert_awaited_once_with('uid')

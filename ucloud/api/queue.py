@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from fastapi import APIRouter, Depends
 
 from ucloud.models import QueueResponse, QueueResponseTotal

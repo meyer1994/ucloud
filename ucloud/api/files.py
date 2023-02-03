@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, UploadFile, File
+from fastapi import APIRouter, Depends, UploadFile
 from fastapi.responses import FileResponse as FastAPIFileResponse
 
 from ucloud.models import FileResponse

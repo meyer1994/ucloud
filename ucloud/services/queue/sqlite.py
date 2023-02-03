@@ -1,5 +1,5 @@
 import json
-from uuid import UUID, uuid4
+from uuid import uuid4
 from datetime import datetime
 
 from fastapi import Response
@@ -110,7 +110,7 @@ class QueueSqlite(QueueBase):
         }
 
     @classmethod
-    async def startup(cls, config):
+    async def startup(cls, config: Config):
         cls._database = Database(config.UCLOUD_QUEUE_SQLITE_PATH)
         await cls._database.connect()
 

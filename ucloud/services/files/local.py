@@ -1,7 +1,6 @@
 import shutil
-from typing import IO
 from uuid import UUID, uuid4
-from tempfile import mkstemp, SpooledTemporaryFile
+from tempfile import SpooledTemporaryFile
 from pathlib import Path
 
 from fastapi import HTTPException
