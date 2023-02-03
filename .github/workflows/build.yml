@@ -19,10 +19,16 @@ jobs:
         image: postgres
         ports:
           - 5432:5432
+        credentials:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       mongodb:
         image: mongodb
         ports:
           - 27017:27017
+        credentials:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v3
