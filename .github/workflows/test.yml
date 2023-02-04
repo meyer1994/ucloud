@@ -13,7 +13,7 @@ jobs:
       matrix:
         UCLOUD_FILES_TYPE: [local]
         UCLOUD_REST_TYPE: [sqlite, postgresql, mongodb]
-        UCLOUD_QUEUE_TYPE: [sqlite, postgresql, mongodb]
+        UCLOUD_QUEUE_TYPE: [sqlite, postgresql, mongodb, aws_sqs]
 
     services:
       postgres:
@@ -27,6 +27,13 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       mongo:
         image: mongo
+        ports:
+          - 27017:27017
+        credentials:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      localstack:
+        image: localstack/localstack
         ports:
           - 27017:27017
         credentials:

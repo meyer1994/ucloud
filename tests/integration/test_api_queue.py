@@ -1,9 +1,10 @@
 import uuid
 
 from tests.mixins.server import ServerMixin
+from tests.mixins.localstack import LocalStackMixin
 
 
-class TestApiQueue(ServerMixin):
+class TestApiQueue(ServerMixin, LocalStackMixin):
     root = str(uuid.uuid4())
 
     def setUp(self):
@@ -43,11 +44,11 @@ class TestApiQueue(ServerMixin):
         # Assert it does not exist anymore
         self._assert_total(0)
 
-    async def test_pop_206(self):
-        """ GET /{root}/queue/peek returns 206 """
+    async def test_pop_204(self):
+        """ GET /{root}/queue/peek returns 204 """
         self._assert_total(0)
         response = self.client.get(f'/{self.root}/queue/pop')
-        self.assertEqual(response.status_code, 206)
+        self.assertEqual(response.status_code, 204)
 
     async def test_peek(self):
         """ GET /{root}/queue/peek returns entry """
@@ -65,11 +66,11 @@ class TestApiQueue(ServerMixin):
         # Assert it was not deleted
         self._assert_total(1)
 
-    async def test_peek_206(self):
-        """ GET /{root}/queue/peek returns 206 """
+    async def test_peek_204(self):
+        """ GET /{root}/queue/peek returns 204 """
         self._assert_total(0)
         response = self.client.get(f'/{self.root}/queue/peek')
-        self.assertEqual(response.status_code, 206)
+        self.assertEqual(response.status_code, 204)
 
     async def test_empty(self):
         """ DELETE /{root}/queue/empty returns entry """
@@ -81,7 +82,7 @@ class TestApiQueue(ServerMixin):
 
         # Empty it
         response = self.client.delete(f'/{self.root}/queue/empty')
-        self.assertEqual(response.status_code, 206)
+        self.assertEqual(response.status_code, 204)
 
         # Assert is empty
         self._assert_total(0)

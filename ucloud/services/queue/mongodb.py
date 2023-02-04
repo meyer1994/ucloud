@@ -46,7 +46,7 @@ class QueueMongoDB(QueueBase):
         result = await self._collection.find_one(query, sort=sort)
 
         if result is None:
-            return Response(status_code=206)
+            return Response(status_code=204)
 
         result['uid'] = result['_id']
         del result['_id']

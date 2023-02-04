@@ -69,7 +69,7 @@ class QueueSqlite(QueueBase):
         result = await self._database.fetch_one(query, values)
 
         if result is None:
-            return Response(status_code=206)
+            return Response(status_code=204)
 
         return {
             'root': self.root,

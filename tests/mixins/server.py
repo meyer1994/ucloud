@@ -5,6 +5,8 @@ from unittest import IsolatedAsyncioTestCase
 import httpx
 import uvicorn
 
+from ucloud import app
+
 
 class Server(uvicorn.Server):
     """
@@ -35,7 +37,7 @@ class ServerMixin(IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.config = uvicorn.Config('ucloud:app', port=cls.PORT, log_level='debug')
+        cls.config = uvicorn.Config(app, port=cls.PORT, log_level='debug')
         cls.server = Server(cls.config)
         cls.server.start()
 

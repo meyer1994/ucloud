@@ -22,7 +22,7 @@ async def peek(service: Queue = Depends(Queue)) -> QueueResponse | None:
     return await service.peek()
 
 
-@router.delete('/empty', status_code=206)
+@router.delete('/empty', status_code=204)
 async def empty(service: Queue = Depends(Queue)) -> None:
     return await service.empty()
 

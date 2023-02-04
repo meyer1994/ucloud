@@ -14,6 +14,7 @@ class Config(BaseSettings):
     UCLOUD_QUEUE_SQLITE_PATH: str = 'sqlite:////tmp/ucloud_sqlite'
     UCLOUD_QUEUE_MONGODB_PATH: str = 'mongodb://127.0.0.1'
     UCLOUD_QUEUE_POSTGRESQL_PATH: str = 'postgresql://postgres@127.0.0.1/postgres'
+    UCLOUD_QUEUE_AWS_SQS_PATH: str = 'ucloud_queue'
 
 
 config = Config()

@@ -18,6 +18,7 @@ Here is the current integrations table. I intend to add more as time goes.
 | SQLite     |   X  |       |   X   |                     |
 | PostgreSQL |   X  |       |   X   |                     |
 | MongoDB    |   X  |       |   X   |                     |
+| AWS SQS    |      |       |   X   |                     |
 
 ## Installing
 
