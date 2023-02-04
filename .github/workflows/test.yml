@@ -23,8 +23,6 @@ jobs:
         credentials:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-        env:
-          EAGER_SERVICE_LOADING: 0
       postgres:
         image: postgres
         ports:
@@ -57,6 +55,7 @@ jobs:
           UCLOUD_REST_TYPE: ${{ matrix.UCLOUD_REST_TYPE }}
           UCLOUD_QUEUE_TYPE: ${{ matrix.UCLOUD_QUEUE_TYPE }}
 
+          # Localstack configs
           AWS_ACCESS_KEY_ID: localkey
           AWS_SECRET_ACCESS_KEY: localsecret
           AWS_DEFAULT_REGION: us-west-2
