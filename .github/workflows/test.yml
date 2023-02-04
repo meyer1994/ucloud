@@ -56,3 +56,5 @@ jobs:
           UCLOUD_FILES_TYPE: ${{ matrix.UCLOUD_FILES_TYPE }}
           UCLOUD_REST_TYPE: ${{ matrix.UCLOUD_REST_TYPE }}
           UCLOUD_QUEUE_TYPE: ${{ matrix.UCLOUD_QUEUE_TYPE }}
+          AWS_ACCESS_KEY_ID: localkey
+          AWS_SECRET_ACCESS_KEY: localsecret
