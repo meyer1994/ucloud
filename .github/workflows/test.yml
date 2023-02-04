@@ -23,6 +23,8 @@ jobs:
         credentials:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+        env:
+          EAGER_SERVICE_LOADING: 0
       postgres:
         image: postgres
         ports:
