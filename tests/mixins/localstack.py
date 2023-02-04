@@ -7,9 +7,9 @@ from localstack_client.patch import enable_local_endpoints, disable_local_endpoi
 
 
 FAKE_ENV = {
-    'AWS_ACCESS_KEY': 'localkey',
+    'AWS_ACCESS_KEY_ID': 'localkey',
     'AWS_SECRET_ACCESS_KEY': 'localsecret',
-    'AWS_DEFAULT_REGION': 'us-east-1'
+    'AWS_DEFAULT_REGION': 'us-east-1',
 }
 
 
@@ -17,9 +17,10 @@ class LocalStackMixin(IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        enable_local_endpoints()
-        cls.addClassCleanup(disable_local_endpoints)
 
         mock = patch.dict(os.environ, FAKE_ENV)
         mock.start()
         cls.addClassCleanup(mock.stop)
+
+        enable_local_endpoints()
+        cls.addClassCleanup(disable_local_endpoints)

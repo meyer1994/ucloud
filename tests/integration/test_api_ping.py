@@ -1,7 +1,7 @@
-from tests.mixins.server import ServerMixin
+from tests.mixins.base import BaseMixin
 
 
-class TestPing(ServerMixin):
+class TestPing(BaseMixin):
     async def test_ping(self):
         """ `GET /ping` returns `pong` """
         response = self.client.get('/ping')

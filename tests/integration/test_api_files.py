@@ -1,11 +1,10 @@
 import uuid
 from tempfile import NamedTemporaryFile
 
-from tests.mixins.server import ServerMixin
-from tests.mixins.localstack import LocalStackMixin
+from tests.mixins.base import BaseMixin
 
 
-class TestApiFiles(ServerMixin, LocalStackMixin):
+class TestApiFiles(BaseMixin):
     root = str(uuid.uuid4())
 
     async def test_write(self):

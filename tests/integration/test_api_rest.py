@@ -1,9 +1,9 @@
 import uuid
 
-from tests.mixins.server import ServerMixin
+from tests.mixins.base import BaseMixin
 
 
-class TestApiRest(ServerMixin):
+class TestApiRest(BaseMixin):
     root = str(uuid.uuid4())
 
     async def test_get(self):

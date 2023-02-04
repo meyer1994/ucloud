@@ -1,10 +1,9 @@
 import uuid
 
-from tests.mixins.server import ServerMixin
-from tests.mixins.localstack import LocalStackMixin
+from tests.mixins.base import BaseMixin
 
 
-class TestApiQueue(ServerMixin, LocalStackMixin):
+class TestApiQueue(BaseMixin):
     root = str(uuid.uuid4())
 
     def setUp(self):
