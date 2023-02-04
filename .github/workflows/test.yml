@@ -25,6 +25,8 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
         env:
           EAGER_SERVICE_LOADING: 0
+          AWS_ACCESS_KEY_ID: localkey
+          AWS_SECRET_ACCESS_KEY: localsecret
       postgres:
         image: postgres
         ports:
