@@ -49,12 +49,8 @@ class FilesAwsS3(FilesBase):
     async def startup(cls, config: Config):
         cls._name = config.UCLOUD_FILES_AWS_S3_PATH.removeprefix('s3://')
         cls._s3 = boto3.resource('s3')
-
         cls._bucket = cls._s3.Bucket(cls._name)
-        try:
-            cls._bucket.load()
-        except botocore.exceptions.ClientError:
-            cls._bucket.create()
+        cls._bucket.create()
 
     @classmethod
     async def shutdown(cls, config: Config):
