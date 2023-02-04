@@ -14,13 +14,26 @@ FAKE_ENV = {
 
 
 class LocalStackMixin(IsolatedAsyncioTestCase):
+    """
+    Mixin that adds fake AWS credentials and enables local endpoints in
+    localstack.
+
+    It adds some basic AWS credentials to the environment and also monkey patch
+    all of boto3 library
+
+    More info about localstack check here:
+        https://github.com/localstack/localstack-python-client
+    """
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
 
         mock = patch.dict(os.environ, FAKE_ENV)
         mock.start()
-        cls.addClassCleanup(mock.stop)
 
         enable_local_endpoints()
+
+        # Last in, first out (LIFO)
+        cls.addClassCleanup(mock.stop)
         cls.addClassCleanup(disable_local_endpoints)

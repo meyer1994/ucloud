@@ -55,6 +55,7 @@ class ServerMixin(IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+
         cls.config = uvicorn.Config(app, port=cls.PORT, log_level='trace')
         cls.server = Server(cls.config)
         cls.server.start()

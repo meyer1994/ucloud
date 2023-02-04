@@ -58,6 +58,20 @@ If you want to only execute unit/integration tests you can do the following:
 python -m unittest discover -vb tests/unit  # or test/integration
 ```
 
+If you want to test some specific backend, you will need to set the respective
+environment variable. For example, to test the REST backend with PostgreSQL and
+the files backend with S3, you will need to do so:
+
+```
+export UCLOUD_REST_TYPE=postgresql
+export UCLOUD_FILES_TYPE=aws_s3
+python -m unittest discover -vb tests
+```
+
+Also, the tests assume that you will have [LocalStack][1] running when testing
+AWS services. Also, you should have PostgreSQL also running. Same is valid
+when testing other backends that need services, like MongoDB, for REST.
+
 ## Configuration
 
 As of now, all configurations can be changed using environment variables. More
