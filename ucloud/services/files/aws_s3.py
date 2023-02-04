@@ -1,8 +1,5 @@
-import os
-import shutil
 from uuid import UUID, uuid4
 from tempfile import SpooledTemporaryFile
-from pathlib import Path
 
 import boto3
 import botocore
@@ -64,6 +61,6 @@ class FilesAwsS3(FilesBase):
         try:
             obj = self._bucket.Object(path)
             obj.load()
-        except botocore.exceptions.ClientError as e:
+        except botocore.exceptions.ClientError:
             msg = f'Item {uid} from {self.root} not found in S3'
             raise HTTPException(status_code=404, detail=msg)

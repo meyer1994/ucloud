@@ -39,7 +39,6 @@ class Server(uvicorn.Server):
 
         raise Exception('Uvicorn server timedout on start')
 
-
     def stop(self):
         self.should_exit = True
         self.thread.join()
