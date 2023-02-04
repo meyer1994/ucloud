@@ -16,6 +16,13 @@ jobs:
         UCLOUD_QUEUE_TYPE: [sqlite, postgresql, mongodb, aws_sqs]
 
     services:
+      localstack:
+        image: localstack/localstack
+        ports:
+          - 4566:4566
+        credentials:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       postgres:
         image: postgres
         ports:
@@ -29,13 +36,6 @@ jobs:
         image: mongo
         ports:
           - 27017:27017
-        credentials:
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      localstack:
-        image: localstack/localstack
-        ports:
-          - 4566:4566
         credentials:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
