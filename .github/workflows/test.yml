@@ -35,7 +35,7 @@ jobs:
       localstack:
         image: localstack/localstack
         ports:
-          - 27017:27017
+          - 4566:4566
         credentials:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
