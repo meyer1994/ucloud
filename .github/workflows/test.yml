@@ -23,10 +23,6 @@ jobs:
         credentials:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-        env:
-          AWS_ACCESS_KEY_ID: localkey
-          AWS_SECRET_ACCESS_KEY: localsecret
-          AWS_DEFAULT_REGION: us-east-1
       postgres:
         image: postgres
         ports:
@@ -58,8 +54,3 @@ jobs:
           UCLOUD_FILES_TYPE: ${{ matrix.UCLOUD_FILES_TYPE }}
           UCLOUD_REST_TYPE: ${{ matrix.UCLOUD_REST_TYPE }}
           UCLOUD_QUEUE_TYPE: ${{ matrix.UCLOUD_QUEUE_TYPE }}
-
-          # Must match localstack
-          AWS_ACCESS_KEY_ID: localkey
-          AWS_SECRET_ACCESS_KEY: localsecret
-          AWS_DEFAULT_REGION: us-east-1
