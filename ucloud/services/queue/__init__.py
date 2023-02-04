@@ -21,7 +21,6 @@ def Queue(root: UUID, config: Config = Depends(ConfigDep)) -> QueueBase:
         return QueueAwsSqs(root)
 
 
-
 async def startup(config: Config):
     if config.UCLOUD_QUEUE_TYPE == 'sqlite':
         return await QueueSqlite.startup(config)

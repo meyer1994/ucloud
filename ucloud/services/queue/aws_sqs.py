@@ -1,9 +1,8 @@
 import json
-from uuid import uuid4
 from datetime import datetime
 
 import boto3
-from fastapi import Response, HTTPException
+from fastapi import HTTPException
 
 from ucloud.settings import Config
 from ucloud.services.queue.base import QueueBase
