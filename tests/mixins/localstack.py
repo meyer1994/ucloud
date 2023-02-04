@@ -7,8 +7,8 @@ from localstack_client.patch import enable_local_endpoints, disable_local_endpoi
 
 
 FAKE_ENV = {
-    'AWS_ACCESS_KEY': 'local',
-    'AWS_SECRET_ACCESS_KEY': 'local',
+    'AWS_ACCESS_KEY': 'localkey',
+    'AWS_SECRET_ACCESS_KEY': 'localsecret',
     'AWS_DEFAULT_REGION': 'us-east-1'
 }
 

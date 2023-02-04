@@ -58,4 +58,4 @@ jobs:
           # Localstack configs
           AWS_ACCESS_KEY_ID: localkey
           AWS_SECRET_ACCESS_KEY: localsecret
-          AWS_DEFAULT_REGION: us-west-2
+          AWS_DEFAULT_REGION: us-east-1
