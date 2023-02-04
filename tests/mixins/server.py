@@ -19,8 +19,26 @@ class Server(uvicorn.Server):
     def start(self):
         self.thread = Thread(target=self.run)
         self.thread.start()
-        while not self.started:
+
+        # Bad configurations may make uvicorn error on startup. This way, its
+        # thread will be stopped. If the thread is stopped, we will throw an
+        # error.
+        #
+        # We also wait, at most, 5 seconds for the server to start. If it does
+        # not, we throw an error
+        for _ in range(500):
+            # Thread is dead, error on server start
+            if not self.thread.is_alive():
+                raise Exception('Error when starting uvicorn server')
+
+            # Server started, we are done here
+            if self.started:
+                return
+
             time.sleep(0.01)
+
+        raise Exception('Uvicorn server timedout on start')
+
 
     def stop(self):
         self.should_exit = True
@@ -37,7 +55,7 @@ class ServerMixin(IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.config = uvicorn.Config(app, port=cls.PORT, log_level='debug')
+        cls.config = uvicorn.Config(app, port=cls.PORT, log_level='trace')
         cls.server = Server(cls.config)
         cls.server.start()
 

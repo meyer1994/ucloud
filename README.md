@@ -19,6 +19,7 @@ Here is the current integrations table. I intend to add more as time goes.
 | PostgreSQL |   X  |       |   X   |                     |
 | MongoDB    |   X  |       |   X   |                     |
 | AWS SQS    |      |       |   X   |                     |
+| AWS S3     |      |   X   |       |                     |
 
 ## Installing
 

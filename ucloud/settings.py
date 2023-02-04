@@ -9,6 +9,7 @@ class Config(BaseSettings):
 
     UCLOUD_FILES_TYPE: str = 'local'
     UCLOUD_FILES_LOCAL_PATH: str = '/tmp/ucloud_files'
+    UCLOUD_FILES_AWS_S3_PATH: str = 's3://ucloud-files'
 
     UCLOUD_QUEUE_TYPE: str = 'sqlite'
     UCLOUD_QUEUE_SQLITE_PATH: str = 'sqlite:////tmp/ucloud_sqlite'

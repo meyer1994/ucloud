@@ -20,6 +20,6 @@ async def read(uid: UUID, service: Files = Depends(Files)) -> FastAPIFileRespons
     return await service.read(uid)
 
 
-@router.delete('/remove/{uid}', status_code=206)
+@router.delete('/remove/{uid}', status_code=204)
 async def remove(uid: UUID, service: Files = Depends(Files)) -> None:
     return await service.remove(uid)

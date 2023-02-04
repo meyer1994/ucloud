@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        UCLOUD_FILES_TYPE: [local]
+        UCLOUD_FILES_TYPE: [local, aws_s3]
         UCLOUD_REST_TYPE: [sqlite, postgresql, mongodb]
         UCLOUD_QUEUE_TYPE: [sqlite, postgresql, mongodb, aws_sqs]
 

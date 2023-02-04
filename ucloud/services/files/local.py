@@ -4,7 +4,7 @@ from tempfile import SpooledTemporaryFile
 from pathlib import Path
 
 from fastapi import HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import StreamingResponse
 
 from ucloud.settings import Config
 from ucloud.services.files.base import FilesBase
@@ -28,28 +28,32 @@ class FilesLocal(FilesBase):
             'root': self.root
         }
 
-    async def read(self, uid: UUID) -> FileResponse:
+    async def read(self, uid: UUID) -> StreamingResponse:
+        self._raise_404_if_not_exists(uid)
+
         path = self._path / str(self.root) / str(uid)
 
-        if not path.exists():
-            msg = f'File {uid} from {self.root} not found in local'
-            raise HTTPException(status_code=404, detail=msg)
+        def stream():
+            with open(path, 'rb') as f:
+                yield from f
 
-        return FileResponse(path)
+        return StreamingResponse(stream())
 
     async def remove(self, uid: UUID):
+        self._raise_404_if_not_exists(uid)
         path = self._path / str(self.root) / str(uid)
-
-        if not path.exists():
-            msg = f'File {uid} from {self.root} not found in local'
-            raise HTTPException(status_code=404, detail=msg)
-
         path.unlink()
 
-    @staticmethod
-    async def startup(config: Config):
-        FilesLocal._path = Path(config.UCLOUD_FILES_LOCAL_PATH)
+    @classmethod
+    async def startup(cls, config: Config):
+        cls._path = Path(config.UCLOUD_FILES_LOCAL_PATH)
 
-    @staticmethod
-    async def shutdown(config: Config):
-        FilesLocal._path = None
+    @classmethod
+    async def shutdown(cls, config: Config):
+        cls._path = None
+
+    def _raise_404_if_not_exists(self, uid: str):
+        path = self._path / str(self.root) / str(uid)
+        if not path.exists():
+            msg = f'Item {uid} from {self.root} not found in local'
+            raise HTTPException(status_code=404, detail=msg)

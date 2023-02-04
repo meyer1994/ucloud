@@ -2,9 +2,10 @@ import uuid
 from tempfile import NamedTemporaryFile
 
 from tests.mixins.server import ServerMixin
+from tests.mixins.localstack import LocalStackMixin
 
 
-class TestApiFiles(ServerMixin):
+class TestApiFiles(ServerMixin, LocalStackMixin):
     root = str(uuid.uuid4())
 
     async def test_write(self):
@@ -38,9 +39,11 @@ class TestApiFiles(ServerMixin):
         """ GET /{root}/files/read/{uid} returns entry """
         uid = self._send_file('hello world')
 
-        response = self.client.get(f'/{self.root}/files/read/{uid}')
-        self.assertEqual(response.status_code, 200)
-        data = response.read()
+        with self.client.stream('GET', f'/{self.root}/files/read/{uid}') as s:
+            data = s.iter_bytes()
+            data = b''.join(data)
+
+        self.assertEqual(s.status_code, 200)
         self.assertEqual(data, b'hello world')
 
     async def test_read_404(self):
@@ -50,9 +53,8 @@ class TestApiFiles(ServerMixin):
         response = self.client.get(f'/{self.root}/files/read/{uid}')
         self.assertEqual(response.status_code, 404)
         data = response.json()
-        self.assertDictEqual(data, {
-            'detail': f'File {uid} from {self.root} not found in local',
-        })
+        self.assertIn('detail', data)
+        self.assertRegex(data['detail'], r'Item .+ from .+ not found in .+')
 
     async def test_remove(self):
         """ DELETE /{root}/files/remove/{uid} returns entry """
@@ -60,7 +62,7 @@ class TestApiFiles(ServerMixin):
 
         # Delete file
         response = self.client.delete(f'/{self.root}/files/remove/{uid}')
-        self.assertEqual(response.status_code, 206)
+        self.assertEqual(response.status_code, 204)
 
         # Assert is deleted
         response = self.client.get(f'/{self.root}/files/read/{uid}')
@@ -73,9 +75,8 @@ class TestApiFiles(ServerMixin):
         response = self.client.delete(f'/{self.root}/files/remove/{uid}')
         self.assertEqual(response.status_code, 404)
         data = response.json()
-        self.assertDictEqual(data, {
-            'detail': f'File {uid} from {self.root} not found in local',
-        })
+        self.assertIn('detail', data)
+        self.assertRegex(data['detail'], r'Item .+ from .+ not found in .+')
 
     def _send_file(self, data: str) -> str:
         data = data.encode()
