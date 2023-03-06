@@ -2,7 +2,7 @@ aiosqlite==0.18.0
 anyio==3.6.2
 asyncpg==0.27.0
 boto3==1.26.81
-botocore==1.29.80
+botocore==1.29.85
 certifi==2022.12.7
 click==8.1.3
 databases==0.7.0
