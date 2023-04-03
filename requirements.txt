@@ -17,7 +17,7 @@ idna==3.4
 jmespath==1.0.1
 localstack-client==1.39
 mccabe==0.7.0
-motor==3.1.1
+motor==3.1.2
 pycodestyle==2.10.0
 pydantic==1.10.4
 pyflakes==3.0.1
